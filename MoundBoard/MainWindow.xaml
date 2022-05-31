@@ -5,5 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid />
+    <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch" Background="DimGray" Width="200" >
+
+        <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="200"  >
+            <Grid Height="50" ></Grid>
+            <Button Height="10" Width="100"></Button>
+            <Button Height="10" Width="100"></Button>
+            <Button Height="10" Width="100"></Button>
+        </StackPanel>
+    </Grid>
+
+
 </Window>
