@@ -14,7 +14,7 @@ public class MyMidiDeviceWatcher
     private readonly ListBox _deviceListBox;
     private readonly Dispatcher _coreDispatcher;
     
-    public DeviceInformationCollection DeviceInformationCollection { get; private set; }
+    public DeviceInformationCollection? DeviceInformationCollection { get; private set; }
     
     public MyMidiDeviceWatcher(string midiDeviceSelectorString, ListBox midiDeviceListBox, Dispatcher dispatcher)
     {
