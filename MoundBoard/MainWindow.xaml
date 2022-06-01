@@ -7,8 +7,12 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch" Background="DimGray" Width="200" >
 
-        <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="200"  >
-            <Grid Height="50" ></Grid>
+        <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="200" >
+            <Grid Height="50" Name="MoundBoardGrid"></Grid>
+            <Grid Height="100" Name="Spacer1"></Grid>
+            <Grid Height="50" VerticalAlignment="Bottom"></Grid>
+            <Grid Height="50" VerticalAlignment="Bottom"></Grid>
+            
             <Button Height="10" Width="100"></Button>
             <Button Height="10" Width="100"></Button>
             <Button Height="10" Width="100"></Button>
