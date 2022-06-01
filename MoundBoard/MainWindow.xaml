@@ -5,5 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid />
+    <ListBox x:Name="midiInPortListBox" SelectionChanged="midiInPortListBox_SelectionChanged"/>
+    <ListBox x:Name="midiOutPortListBox" SelectionChanged="midiOutPortListBox_SelectionChanged"/>
+
+    
+   
+    
 </Window>
