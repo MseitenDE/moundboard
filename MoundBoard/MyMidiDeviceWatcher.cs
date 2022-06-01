@@ -1,104 +1,102 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using Windows.Devices.Enumeration;
-using Windows.UI.Core;
-
 
 namespace MoundBoard;
 
 public class MyMidiDeviceWatcher
 {
-    DeviceWatcher deviceWatcher;
-    string deviceSelectorString;
-    ListBox deviceListBox;
-    CoreDispatcher coreDispatcher;
+    private readonly DeviceWatcher _deviceWatcher;
+    private readonly string _deviceSelectorString;
+    private readonly ListBox _deviceListBox;
+    private readonly Dispatcher _coreDispatcher;
     
-    public DeviceInformationCollection DeviceInformationCollection { get; set; }
+    public DeviceInformationCollection DeviceInformationCollection { get; private set; }
     
-    public MyMidiDeviceWatcher(string midiDeviceSelectorString, ListBox midiDeviceListBox, CoreDispatcher dispatcher)
+    public MyMidiDeviceWatcher(string midiDeviceSelectorString, ListBox midiDeviceListBox, Dispatcher dispatcher)
     {
-        deviceListBox = midiDeviceListBox;
-        coreDispatcher = dispatcher;
+        _deviceListBox = midiDeviceListBox;
+        _coreDispatcher = dispatcher;
 
-        deviceSelectorString = midiDeviceSelectorString;
+        _deviceSelectorString = midiDeviceSelectorString;
 
-        deviceWatcher = DeviceInformation.CreateWatcher(deviceSelectorString);
-        deviceWatcher.Added += DeviceWatcher_Added;
-        deviceWatcher.Removed += DeviceWatcher_Removed;
-        deviceWatcher.Updated += DeviceWatcher_Updated;
-        deviceWatcher.EnumerationCompleted += DeviceWatcher_EnumerationCompleted;
+        _deviceWatcher = DeviceInformation.CreateWatcher(_deviceSelectorString);
+        _deviceWatcher.Added += DeviceWatcher_Added;
+        _deviceWatcher.Removed += DeviceWatcher_Removed;
+        _deviceWatcher.Updated += DeviceWatcher_Updated;
+        _deviceWatcher.EnumerationCompleted += DeviceWatcher_EnumerationCompleted;
     }
     
     private async void DeviceWatcher_Removed(DeviceWatcher sender, DeviceInformationUpdate args)
     {
-        await coreDispatcher.RunAsync(CoreDispatcherPriority.High, () =>
+        await _coreDispatcher.InvokeAsync(async () =>
         {
             // Update the device list
-            UpdateDevices();
+            await UpdateDevices();
         });
     }
 
     private async void DeviceWatcher_Added(DeviceWatcher sender, DeviceInformation args)
     {
-        await coreDispatcher.RunAsync(CoreDispatcherPriority.High, () =>
+        await _coreDispatcher.InvokeAsync(async () =>
         {
             // Update the device list
-            UpdateDevices();
+            await UpdateDevices();
         });
     }
 
     private async void DeviceWatcher_EnumerationCompleted(DeviceWatcher sender, object args)
     {
-        await coreDispatcher.RunAsync(CoreDispatcherPriority.High, () =>
+        // Update the device list
+        await _coreDispatcher.InvokeAsync(async () =>
         {
-            // Update the device list
-            UpdateDevices();
+            await UpdateDevices();
         });
     }
 
     private async void DeviceWatcher_Updated(DeviceWatcher sender, DeviceInformationUpdate args)
     {
-        await coreDispatcher.RunAsync(CoreDispatcherPriority.High, () =>
+        await _coreDispatcher.InvokeAsync(async () =>
         {
             // Update the device list
-            UpdateDevices();
+            await UpdateDevices();
         });
     }
-    private async void UpdateDevices()
+    private async Task UpdateDevices()
     {
         // Get a list of all MIDI devices
-        this.DeviceInformationCollection = await DeviceInformation.FindAllAsync(deviceSelectorString);
+        DeviceInformationCollection = await DeviceInformation.FindAllAsync(_deviceSelectorString);
 
-        deviceListBox.Items.Clear();
+        _deviceListBox.Items.Clear();
 
-        if (!this.DeviceInformationCollection.Any())
+        if (!DeviceInformationCollection.Any())
         {
-            deviceListBox.Items.Add("No MIDI devices found!");
+            _deviceListBox.Items.Add("No MIDI devices found!");
         }
 
-        foreach (var deviceInformation in this.DeviceInformationCollection)
+        foreach (var deviceInformation in DeviceInformationCollection)
         {
-            deviceListBox.Items.Add(deviceInformation.Name);
+            _deviceListBox.Items.Add(deviceInformation.Name);
         }
     }
     
     public void StartWatcher()
     {
-        deviceWatcher.Start();
+        _deviceWatcher.Start();
     }
     public void StopWatcher()
     {
-        deviceWatcher.Stop();
+        _deviceWatcher.Stop();
     }
     
     ~MyMidiDeviceWatcher()
     {
-        deviceWatcher.Added -= DeviceWatcher_Added;
-        deviceWatcher.Removed -= DeviceWatcher_Removed;
-        deviceWatcher.Updated -= DeviceWatcher_Updated;
-        deviceWatcher.EnumerationCompleted -= DeviceWatcher_EnumerationCompleted;
-        deviceWatcher = null;
+        _deviceWatcher.Added -= DeviceWatcher_Added;
+        _deviceWatcher.Removed -= DeviceWatcher_Removed;
+        _deviceWatcher.Updated -= DeviceWatcher_Updated;
+        _deviceWatcher.EnumerationCompleted -= DeviceWatcher_EnumerationCompleted;
     }
-    
 }
