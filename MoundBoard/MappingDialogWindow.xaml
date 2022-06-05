@@ -1,0 +1,16 @@
+﻿<Window x:Class="MoundBoard.MappingDialogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:MoundBoard"
+        mc:Ignorable="d"
+        Title="MappingDialogWindow" Height="450" Width="800">
+    <Grid>
+        <TextBlock Margin="30,10,0,0" FontSize="20">Configure this Button</TextBlock>
+        <TextBox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="30,50,0,0" FontSize="20">Location</TextBox>
+        <TextBlock Margin="30,100,0,0" FontSize="20" Height="30" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top">Color</TextBlock>
+        <Canvas Name="Canvas" Margin="100,100,0,0" Height="50" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Gray" MouseDown="Canvas_OnMouseDown"></Canvas>
+        <Button Height="100" Width="100" HorizontalAlignment="Left" VerticalAlignment="top" Margin="30,150,0,0" Background="Aqua" Click="ButtonBase_OnClick">Apply</Button>
+    </Grid>
+</Window>

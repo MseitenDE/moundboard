@@ -1,24 +1,27 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
+using Windows.Devices.Midi;
 
 namespace MoundBoard;
 
 public partial class MainWindow
 {
-    public MidiHandler MidiHandler { get; }
     public MainWindow()
     {
         InitializeComponent();
         
-        MidiHandler = new MidiHandler(Dispatcher, MidiInPortListBox, MidiOutPortListBox);
+        }
+
+
+    private void IOButtonBase_OnClick(object sender, RoutedEventArgs e)
+    {
+        Window midiIoSettingsWindow = new MidiIOSettings();
+        midiIoSettingsWindow.Show();
     }
 
-    private void MidiInPortListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void MappingButtonBase_OnClick(object sender, RoutedEventArgs e)
     {
-        MidiHandler.OnSelectedInputChanged();
-    }
-
-    private void MidiOutPortListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        MidiHandler.OnSelectedOutputChanged();
+        Window mappingWindow = new MappingWindow();
+        mappingWindow.Show();
     }
 }

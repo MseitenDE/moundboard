@@ -125,4 +125,27 @@ public class MidiHandler
             Debug.WriteLine(midiNote.Velocity);
         }
     }
+
+    private void MidiOutPort_sendMessage()
+    {
+        byte channel = 0;
+        byte controller = 0;
+        byte[] controlValue = { 240, 0, 32, 41, 2, 14, 14, 0, 247 };
+
+
+        // IMidiMessage message = new MidiControlChangeMessage(channel,controller, controlValue);
+
+        foreach (var VARIABLE in controlValue)
+        {
+            IMidiMessage message = new MidiControlChangeMessage(channel,controller, VARIABLE);
+            _midiOutPort.SendMessage(message);
+        }
+
+        
+        // IMidiMessage NoteMessage = new MidiNoteOnMessage(0, 64, 100);
+        // _midiOutPort.SendMessage(NoteMessage);
+
+
+
+    }
 }
