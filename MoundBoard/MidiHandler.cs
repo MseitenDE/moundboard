@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Threading;
 using Windows.Devices.Enumeration;
 using Windows.Devices.Midi;
+using Windows.Storage.Streams;
+using ListBox = System.Windows.Controls.ListBox;
 
 namespace MoundBoard;
 
@@ -21,11 +25,11 @@ public class MidiHandler
     {
         _midiInPortListBox = midiInPortListBox;
         _midiOutPortListBox = midiOutPortListBox;
-        
+
         _inputDeviceWatcher = new MyMidiDeviceWatcher(MidiInPort.GetDeviceSelector(), midiInPortListBox, dispatcher);
         _inputDeviceWatcher.StartWatcher();
 
-        _outputDeviceWatcher =new MyMidiDeviceWatcher(MidiOutPort.GetDeviceSelector(), midiOutPortListBox, dispatcher);
+        _outputDeviceWatcher = new MyMidiDeviceWatcher(MidiOutPort.GetDeviceSelector(), midiOutPortListBox, dispatcher);
         _outputDeviceWatcher.StartWatcher();
     }
 
@@ -33,7 +37,7 @@ public class MidiHandler
     {
         await EnumerateMidiDevices(MidiInPort.GetDeviceSelector(), _midiInPortListBox);
     }
-    
+
     private async Task EnumerateMidiOutputDevices()
     {
         await EnumerateMidiDevices(MidiOutPort.GetDeviceSelector(), _midiOutPortListBox);
@@ -58,9 +62,10 @@ public class MidiHandler
         {
             listBox.Items.Add(deviceInfo.Name);
         }
+
         listBox.IsEnabled = true;
     }
-    
+
     public async void OnSelectedInputChanged()
     {
         var deviceInfoCollection = _inputDeviceWatcher.DeviceInformationCollection;
@@ -84,6 +89,7 @@ public class MidiHandler
             Debug.WriteLine("Unable to create MidiInPort from input device");
             return;
         }
+
         _midiInPort.MessageReceived += MidiInPort_MessageReceived;
     }
 
@@ -105,12 +111,37 @@ public class MidiHandler
 
         _midiOutPort = await MidiOutPort.FromIdAsync(devInfo.Id);
 
+        if (devInfo.Name.Contains("LPP3"))
+        {
+            IMidiMessage midiMessageToSend = null;
+            var dataWriter = new DataWriter();
+            string[] sysExMessages = { "F0 00 20 29 02 0E 0E 01 F7", ""};
+                
+            foreach (var sysExMessage in sysExMessages)
+            {
+                var sysExMessageLength = sysExMessage.Length;
+
+
+                int loopCount = (sysExMessageLength + 1) / 3;
+
+                for (int i = 0; i < loopCount; i++)
+                {
+                    var messageString = sysExMessage.Substring(3 * i, 2);
+                    var messageByte = Convert.ToByte(messageString, 16);
+                    dataWriter.WriteByte(messageByte);
+                }
+
+                midiMessageToSend = new MidiSystemExclusiveMessage(dataWriter.DetachBuffer());
+                _midiOutPort.SendMessage(midiMessageToSend);
+            }
+        }
+
         if (_midiOutPort == null)
         {
             Debug.WriteLine("Unable to create MidiOutPort from output device");
         }
     }
-    
+
     private void MidiInPort_MessageReceived(MidiInPort sender, MidiMessageReceivedEventArgs args)
     {
         var receivedMidiMessage = args.Message;
@@ -119,33 +150,41 @@ public class MidiHandler
 
         if (receivedMidiMessage.Type == MidiMessageType.NoteOn)
         {
-            var midiNote = (MidiNoteOnMessage) receivedMidiMessage;
+            var midiNote = (MidiNoteOnMessage)receivedMidiMessage;
             Debug.WriteLine(midiNote.Channel);
             Debug.WriteLine(midiNote.Note);
             Debug.WriteLine(midiNote.Velocity);
         }
     }
 
-    private void MidiOutPort_sendMessage()
+    public void MidiOutPort_sendMessage()
     {
-        byte channel = 0;
-        byte controller = 0;
-        byte[] controlValue = { 240, 0, 32, 41, 2, 14, 14, 0, 247 };
+        IMidiMessage midiMessageToSend = null;
+        var dataWriter = new DataWriter();
+        var sysExMessage = "F0 00 20 29 02 0E 0E 1 F7";
+        sysExMessage = "F0 00 20 29 02 0E 0E 01 F7";
+        var sysExMessageLength = sysExMessage.Length;
 
-
-        // IMidiMessage message = new MidiControlChangeMessage(channel,controller, controlValue);
-
-        foreach (var VARIABLE in controlValue)
+        // Do not send a blank SysEx message
+        if (sysExMessageLength == 0)
         {
-            IMidiMessage message = new MidiControlChangeMessage(channel,controller, VARIABLE);
-            _midiOutPort.SendMessage(message);
+            return;
         }
 
-        
-        // IMidiMessage NoteMessage = new MidiNoteOnMessage(0, 64, 100);
-        // _midiOutPort.SendMessage(NoteMessage);
+        // SysEx messages are two characters long with 1-character space in between them
+        // So we add 1 to the message length, so that it is perfectly divisible by 3
+        // The loop count tracks the number of individual message pieces
+        int loopCount = (sysExMessageLength + 1) / 3;
 
+        // Expecting a string of format "F0 NN NN NN NN.... F7", where NN is a byte in hex
+        for (int i = 0; i < loopCount; i++)
+        {
+            var messageString = sysExMessage.Substring(3 * i, 2);
+            var messageByte = Convert.ToByte(messageString, 16);
+            dataWriter.WriteByte(messageByte);
+        }
 
-
+        midiMessageToSend = new MidiSystemExclusiveMessage(dataWriter.DetachBuffer());
+        _midiOutPort.SendMessage(midiMessageToSend);
     }
 }

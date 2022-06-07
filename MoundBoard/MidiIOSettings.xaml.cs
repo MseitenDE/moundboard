@@ -1,6 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using Windows.Devices.Midi;
+using Buffer = Windows.Storage.Streams.Buffer;
 
 namespace MoundBoard;
 
@@ -27,13 +31,8 @@ public partial class MidiIOSettings : Window
 
     private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
     {
-        byte channel = 0;
-        byte controller = 0;
-        byte controlValue = 0;
+       MidiHandler.MidiOutPort_sendMessage();
 
-
-        IMidiMessage message = new MidiControlChangeMessage(channel,controller, controlValue);
-        
         
     }
 }

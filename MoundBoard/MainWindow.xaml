@@ -9,6 +9,7 @@
         <TextBlock VerticalAlignment="Top" Margin="10,10,10,0" FontSize="30">MoundBert</TextBlock>
         <Button Height="60" Margin="20,100,20,0" VerticalAlignment="Top" Click="IOButtonBase_OnClick" Background="Chocolate">MidiIOSettings</Button>
         <Button Height="60" Margin="20,180,20,0" VerticalAlignment="Top" Click="MappingButtonBase_OnClick" Background="Chocolate">Mapping</Button>
+        <Button Height="60" Margin="20,260,20,0" VerticalAlignment="Top" Click="ButtonBase_OnClick" Background="Chocolate">Message</Button>
 
     </Grid>
 </Window>
