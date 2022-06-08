@@ -34,4 +34,14 @@ public partial class MainWindow
     {
         
     }
+
+    private void ToggleButton_OnChecked(object sender, RoutedEventArgs e)
+    {
+        MidiHandler.isMartin = true;
+    }
+
+    private void ToggleButton_OnUnchecked(object sender, RoutedEventArgs e)
+    {
+        MidiHandler.isMartin = false;
+    }
 }

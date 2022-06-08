@@ -15,6 +15,7 @@ namespace MoundBoard;
 
 public class MidiHandler
 {
+    public static bool isMartin; 
     private readonly ListBox _midiInPortListBox;
     private readonly ListBox _midiOutPortListBox;
     private readonly MyMidiDeviceWatcher _inputDeviceWatcher;
@@ -168,7 +169,12 @@ public class MidiHandler
         IMidiMessage midiMessageToSend = null;
         var dataWriter = new DataWriter();
         var sysExMessage = "F0 00 20 29 02 0E 0E 1 F7";
-        sysExMessage = "F0 00 20 29 02 0E 0E 01 F7";
+        if (isMartin)
+        {
+            sysExMessage = "F0 00 20 29 02 18 0E 01 F7";
+        }
+       
+        
         var sysExMessageLength = sysExMessage.Length;
 
         // Do not send a blank SysEx message
@@ -200,12 +206,13 @@ public class MidiHandler
         var receivedMidiMessage = args.Message;
 
         Debug.WriteLine(receivedMidiMessage.Timestamp.ToString());
-
+        
+        List<IMidiMessage> messages = new List<IMidiMessage>();
         if (receivedMidiMessage.Type == MidiMessageType.TimingClock)
         {
             if (_lightshowState.Equals("startup"))
             {
-                List<IMidiMessage> messages = new List<IMidiMessage>();
+                
                 switch (_enumeration)
                 {
                     case 0:
@@ -240,7 +247,7 @@ public class MidiHandler
                         messages.Add(new MidiNoteOnMessage(channel, 17, velocity));
                         break;
                     default:
-                        messages = null;
+                        //messages = null;
                         break;
                 }
                 _enumeration++;
