@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
@@ -20,6 +21,9 @@ public class MidiHandler
     private readonly MyMidiDeviceWatcher _outputDeviceWatcher;
     private MidiInPort _midiInPort;
     private IMidiOutPort _midiOutPort;
+
+    private string _lightshowState;
+    private int _enumeration;
 
     public MidiHandler(Dispatcher dispatcher, ListBox midiInPortListBox, ListBox midiOutPortListBox)
     {
@@ -90,7 +94,12 @@ public class MidiHandler
             return;
         }
 
+
         _midiInPort.MessageReceived += MidiInPort_MessageReceived;
+        _midiInPort.MessageReceived += OnClockSignal;
+
+        _lightshowState = "startup";
+        _enumeration = 0;
     }
 
     public async void OnSelectedOutputChanged()
@@ -111,34 +120,31 @@ public class MidiHandler
 
         _midiOutPort = await MidiOutPort.FromIdAsync(devInfo.Id);
 
-        if (devInfo.Name.Contains("LPP3"))
-        {
-            IMidiMessage midiMessageToSend = null;
-            var dataWriter = new DataWriter();
-            string[] sysExMessages = { "F0 00 20 29 02 0E 0E 01 F7", ""};
-                
-            foreach (var sysExMessage in sysExMessages)
-            {
-                var sysExMessageLength = sysExMessage.Length;
-
-
-                int loopCount = (sysExMessageLength + 1) / 3;
-
-                for (int i = 0; i < loopCount; i++)
-                {
-                    var messageString = sysExMessage.Substring(3 * i, 2);
-                    var messageByte = Convert.ToByte(messageString, 16);
-                    dataWriter.WriteByte(messageByte);
-                }
-
-                midiMessageToSend = new MidiSystemExclusiveMessage(dataWriter.DetachBuffer());
-                _midiOutPort.SendMessage(midiMessageToSend);
-            }
-        }
-
         if (_midiOutPort == null)
         {
             Debug.WriteLine("Unable to create MidiOutPort from output device");
+            return;
+        }
+
+        var dataWriter = new DataWriter();
+        string[] sysExMessages = { "F0 00 20 29 02 0E 0E 01 F7"};
+
+        foreach (var sysExMessage in sysExMessages)
+        {
+            var sysExMessageLength = sysExMessage.Length;
+
+
+            int loopCount = (sysExMessageLength + 1) / 3;
+
+            for (int i = 0; i < loopCount; i++)
+            {
+                var messageString = sysExMessage.Substring(3 * i, 2);
+                var messageByte = Convert.ToByte(messageString, 16);
+                dataWriter.WriteByte(messageByte);
+            }
+
+            IMidiMessage midiMessageToSend = new MidiSystemExclusiveMessage(dataWriter.DetachBuffer());
+            _midiOutPort.SendMessage(midiMessageToSend);
         }
     }
 
@@ -186,5 +192,63 @@ public class MidiHandler
 
         midiMessageToSend = new MidiSystemExclusiveMessage(dataWriter.DetachBuffer());
         _midiOutPort.SendMessage(midiMessageToSend);
+    }
+
+    private void OnClockSignal(MidiInPort sender, MidiMessageReceivedEventArgs args)
+    {
+        if(_midiOutPort == null ) return;
+        var receivedMidiMessage = args.Message;
+
+        Debug.WriteLine(receivedMidiMessage.Timestamp.ToString());
+
+        if (receivedMidiMessage.Type == MidiMessageType.TimingClock)
+        {
+            if (_lightshowState.Equals("startup"))
+            {
+                List<IMidiMessage> messages = new List<IMidiMessage>();
+                switch (_enumeration)
+                {
+                    case 0:
+                        byte channel = 0x00;
+                        byte note = 0x0B;
+                        byte velocity = 0x05;
+                        messages.Add(new MidiNoteOnMessage(channel, note, velocity)); 
+                        messages.Add(new MidiNoteOnMessage(channel, 21, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 31, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 41, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 51, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 61, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 71, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 81, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 72, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 62, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 63, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 53, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 54, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 44, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 55, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 65, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 66, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 76, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 87, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 77, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 67, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 57, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 47, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 37, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 27, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 17, velocity));
+                        break;
+                    default:
+                        messages = null;
+                        break;
+                }
+                _enumeration++;
+                foreach (var VARIABLE in messages)
+                {
+                    _midiOutPort.SendMessage(VARIABLE);
+                }
+            }
+        }
     }
 }
