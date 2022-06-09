@@ -3,98 +3,35 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:MoundBoard"
         mc:Ignorable="d"
         Title="MappingWindow" Height="1000" Width="1000" MinHeight="900" MinWidth="900">
-
-    <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Height="900" Width="900" Background="Coral"
-                                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <StackPanel>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-            </StackPanel>
-            <StackPanel>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-            </StackPanel>
-            <StackPanel>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-            </StackPanel>
-            <StackPanel>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-            </StackPanel>
-            <StackPanel>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-            </StackPanel>
-            <StackPanel>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-            </StackPanel>
-            <StackPanel>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-            </StackPanel>
-            <StackPanel>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-                <Button Height="100" Width="100" Click="ButtonBase_OnClick"> </Button>
-            </StackPanel>
-            
-            <StackPanel>
-                
-            </StackPanel>
-        </StackPanel>
-    </Grid>
-
+    
+    <Border Background="Coral" VerticalAlignment="Center" HorizontalAlignment="Center" Height="900" Width="900" CornerRadius="7">
+        <Grid x:Name="GridButtons">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.5*" />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition Height="0.5*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*" />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition Width="0.5*" />
+            </Grid.ColumnDefinitions>
+        </Grid>
+    </Border>
 </Window>

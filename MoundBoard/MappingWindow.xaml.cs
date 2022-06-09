@@ -1,19 +1,30 @@
-﻿using System.Windows;
-using System.Windows.Forms;
+﻿using System.Windows.Controls;
+using MoundBoard.Entities;
+using MoundBoard.Panels;
 
 namespace MoundBoard;
 
-public partial class MappingWindow : Window
+public partial class MappingWindow
 {
-    public MappingWindow()
-    {
-        InitializeComponent();
-    }
+    public Layout Layout { get; }
 
-    private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+    public MappingWindow(Layout layout)
     {
-        Window dialogwindow = new MappingDialogWindow(sender,e);
-        dialogwindow.Show();
+        Layout = layout;
         
+        InitializeComponent();
+
+        for (var x = 0; x < 8; x++)
+        {
+            for (var y = 0; y < 8; y++)
+            {
+                var panel = new ButtonPanel(layout.Buttons[x, y]);
+                
+                panel.SetValue(Grid.RowProperty, x + 1);
+                panel.SetValue(Grid.ColumnProperty, y + 1);
+
+                GridButtons.Children.Add(panel);
+            }
+        }
     }
 }

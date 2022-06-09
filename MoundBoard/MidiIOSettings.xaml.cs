@@ -1,14 +1,9 @@
-﻿using System;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
-using Windows.Devices.Midi;
-using Buffer = Windows.Storage.Streams.Buffer;
 
 namespace MoundBoard;
 
-public partial class MidiIOSettings : Window
+public partial class MidiIOSettings
 {
     public MidiHandler MidiHandler { get; }
 
@@ -17,8 +12,8 @@ public partial class MidiIOSettings : Window
         InitializeComponent();
         
         MidiHandler = new MidiHandler(Dispatcher, MidiInPortListBox, MidiOutPortListBox);
-
     }
+    
     private void MidiInPortListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         MidiHandler.OnSelectedInputChanged();
@@ -32,7 +27,5 @@ public partial class MidiIOSettings : Window
     private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
     {
        MidiHandler.MidiOutPort_sendMessage();
-
-        
     }
 }

@@ -1,48 +1,36 @@
-﻿
-
-using System.Drawing;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Controls;
-using Button = System.Windows.Controls.Button;
-using Color = System.Windows.Media.Color;
+using MoundBoard.Panels;
 
 namespace MoundBoard;
 
-public partial class MappingDialogWindow : Window
+public partial class MappingDialogWindow
 {
-    private Button button { get; set; }
-    private RoutedEventArgs _eventArgs { get; set; }
-    private System.Drawing.Color _color { get; set; }
+    public ButtonPanel Panel { get; }
 
-    public MappingDialogWindow(object sender, RoutedEventArgs e)
+    public MappingDialogWindow(ButtonPanel panel)
     {
+        Panel = panel;
         
         InitializeComponent();
-        button = (Button?)sender;
-        _eventArgs = e;
 
-
+        Canvas.Background = new SolidColorBrush(panel.Button.Color);
     }
 
     private void Canvas_OnMouseDown(object sender, MouseButtonEventArgs e)
     {
-        ColorDialog d = new ColorDialog();
+        var d = new ColorDialog();
         d.ShowDialog();
         
-        SolidColorBrush brush =  new SolidColorBrush();
-        brush.Color = Color.FromArgb(d.Color.A,d.Color.R,d.Color.G,d.Color.B);
-        _color = d.Color;
+        Panel.Button.Color = Color.FromArgb(d.Color.A, d.Color.R, d.Color.G, d.Color.B);
 
-
-        this.Canvas.Background = brush;
+        Canvas.Background = new SolidColorBrush(Panel.Button.Color);
     }
 
     private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
     {
-        button.Background = this.Canvas.Background;
-
+        Panel.Update();
     }
 }

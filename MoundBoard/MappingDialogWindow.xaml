@@ -10,7 +10,7 @@
         <TextBlock Margin="30,10,0,0" FontSize="20">Configure this Button</TextBlock>
         <TextBox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="30,50,0,0" FontSize="20">Location</TextBox>
         <TextBlock Margin="30,100,0,0" FontSize="20" Height="30" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top">Color</TextBlock>
-        <Canvas Name="Canvas" Margin="100,100,0,0" Height="50" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Gray" MouseDown="Canvas_OnMouseDown"></Canvas>
+        <Canvas Name="Canvas" Margin="100,100,0,0" Height="50" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" MouseDown="Canvas_OnMouseDown" />
         <Button Height="100" Width="100" HorizontalAlignment="Left" VerticalAlignment="top" Margin="30,150,0,0" Background="Aqua" Click="ButtonBase_OnClick">Apply</Button>
     </Grid>
 </Window>

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using System.Windows.Threading;
 using Windows.Devices.Enumeration;
 using Windows.Devices.Midi;
