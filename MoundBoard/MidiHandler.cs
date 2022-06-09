@@ -15,7 +15,7 @@ namespace MoundBoard;
 
 public class MidiHandler
 {
-    public static bool isMartin; 
+    public static bool isMartin;
     private readonly ListBox _midiInPortListBox;
     private readonly ListBox _midiOutPortListBox;
     private readonly MyMidiDeviceWatcher _inputDeviceWatcher;
@@ -128,7 +128,7 @@ public class MidiHandler
         }
 
         var dataWriter = new DataWriter();
-        string[] sysExMessages = { "F0 00 20 29 02 0E 0E 01 F7"};
+        string[] sysExMessages = { "F0 00 20 29 02 0E 0E 01 F7" };
 
         foreach (var sysExMessage in sysExMessages)
         {
@@ -173,8 +173,8 @@ public class MidiHandler
         {
             sysExMessage = "F0 00 20 29 02 18 0E 01 F7";
         }
-       
-        
+
+
         var sysExMessageLength = sysExMessage.Length;
 
         // Do not send a blank SysEx message
@@ -200,26 +200,33 @@ public class MidiHandler
         _midiOutPort.SendMessage(midiMessageToSend);
     }
 
+    public void SetLightShowState(string state)
+    {
+        _lightshowState = state;
+        _enumeration = 0;
+    }
+
     private void OnClockSignal(MidiInPort sender, MidiMessageReceivedEventArgs args)
     {
-        if(_midiOutPort == null ) return;
+        if (_midiOutPort == null) return;
         var receivedMidiMessage = args.Message;
 
         Debug.WriteLine(receivedMidiMessage.Timestamp.ToString());
-        
+
         List<IMidiMessage> messages = new List<IMidiMessage>();
         if (receivedMidiMessage.Type == MidiMessageType.TimingClock)
         {
             if (_lightshowState.Equals("startup"))
             {
-                
+                byte channel = 0x00;
+                byte note = 0x0B;
+                byte velocity = 0x05;
                 switch (_enumeration)
                 {
                     case 0:
-                        byte channel = 0x00;
-                        byte note = 0x0B;
-                        byte velocity = 0x05;
-                        messages.Add(new MidiNoteOnMessage(channel, note, velocity)); 
+
+
+                        messages.Add(new MidiNoteOnMessage(channel, note, velocity));
                         messages.Add(new MidiNoteOnMessage(channel, 21, velocity));
                         messages.Add(new MidiNoteOnMessage(channel, 31, velocity));
                         messages.Add(new MidiNoteOnMessage(channel, 41, velocity));
@@ -245,12 +252,274 @@ public class MidiHandler
                         messages.Add(new MidiNoteOnMessage(channel, 37, velocity));
                         messages.Add(new MidiNoteOnMessage(channel, 27, velocity));
                         messages.Add(new MidiNoteOnMessage(channel, 17, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 18, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 19, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 59, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 69, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 79, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 89, velocity));
+                        break;
+                    case 10:
+                        messages.Add(new MidiNoteOffMessage(channel, 11, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 21, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 31, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 41, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 51, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 61, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 71, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 81, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 72, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 62, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 63, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 53, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 54, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 44, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 55, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 65, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 66, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 76, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 87, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 77, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 67, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 57, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 47, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 37, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 27, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 17, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 18, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 19, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 59, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 69, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 79, velocity));
+
+                        messages.Add(new MidiNoteOnMessage(channel, 10, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 20, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 30, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 40, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 50, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 60, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 70, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 80, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 71, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 61, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 62, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 52, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 53, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 43, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 54, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 64, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 65, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 75, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 86, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 76, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 66, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 56, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 46, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 36, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 26, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 16, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 17, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 18, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 28, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 38, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 48, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 58, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 68, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 78, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 88, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 19, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 59, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 89, velocity));
+
+                        break;
+                    case 20:
+
+                        messages.Add(new MidiNoteOffMessage(channel, 10, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 20, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 30, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 40, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 50, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 60, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 70, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 80, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 71, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 61, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 62, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 52, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 53, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 43, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 54, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 64, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 65, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 75, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 86, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 76, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 66, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 56, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 46, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 36, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 26, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 16, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 17, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 18, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 28, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 38, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 48, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 58, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 68, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 78, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 88, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 19, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 59, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 89, velocity));
+                        ///////////////////////////////////////
+                        messages.Add(new MidiNoteOnMessage(channel, 70, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 60, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 61, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 51, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 52, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 42, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 53, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 63, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 64, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 74, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 85, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 75, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 65, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 55, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 45, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 35, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 25, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 15, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 16, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 17, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 57, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 67, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 77, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 87, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 18, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 58, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 88, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 19, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 59, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 89, velocity));
+                        break;
+                    case 30:
+                        messages.Add(new MidiNoteOffMessage(channel, 70, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 60, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 61, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 51, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 52, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 42, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 53, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 63, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 64, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 74, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 85, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 75, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 65, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 55, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 45, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 35, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 25, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 15, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 16, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 17, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 57, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 67, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 77, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 87, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 18, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 58, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 88, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 19, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 59, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 89, velocity));
+
+                        ///////////////
+                        messages.Add(new MidiNoteOnMessage(channel, 60, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 50, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 51, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 41, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 52, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 62, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 63, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 73, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 84, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 74, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 64, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 54, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 44, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 34, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 24, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 14, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 15, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 16, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 56, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 66, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 76, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 86, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 17, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 57, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 87, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 18, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 58, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 88, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 19, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 29, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 39, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 49, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 59, velocity));
+                        messages.Add(new MidiNoteOnMessage(channel, 89, velocity));
+
+
+                        
+                        break;
+
+                    case 100:
+                        messages.Add(new MidiNoteOffMessage(channel, 60, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 50, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 51, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 41, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 52, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 62, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 63, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 73, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 84, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 74, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 64, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 54, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 44, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 34, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 24, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 14, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 15, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 16, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 56, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 66, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 76, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 86, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 17, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 57, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 87, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 18, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 58, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 88, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 19, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 29, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 39, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 49, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 59, velocity));
+                        messages.Add(new MidiNoteOffMessage(channel, 89, velocity));
+                        _lightshowState = "";
                         break;
                     default:
                         //messages = null;
                         break;
                 }
-                _enumeration++;
+
+                if (!_lightshowState.Equals("")) _enumeration++;
+
                 foreach (var VARIABLE in messages)
                 {
                     _midiOutPort.SendMessage(VARIABLE);
