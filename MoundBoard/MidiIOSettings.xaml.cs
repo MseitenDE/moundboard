@@ -26,6 +26,7 @@ public partial class MidiIOSettings
 
     private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
     {
-       MidiHandler.MidiOutPort_sendMessage();
+        MidiHandler.SetLightShowState("startup");
+        
     }
 }
