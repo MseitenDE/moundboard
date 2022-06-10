@@ -22,7 +22,7 @@ public abstract class Animation
     /// <summary>
     /// Starts the animation and applies the frames after the given time.
     /// </summary>
-    public void Start(Layout layout)
+    public async void Start(Layout layout)
     {
         Layout = layout;
         OnStart(layout);
@@ -30,7 +30,7 @@ public abstract class Animation
         while (HasNext())
         {
             ApplyNextFrame();
-            Thread.Sleep(Delay);
+            await Task.Delay(Delay);
         }
     }
     
