@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using System.Windows.Media;
-using MoundBoard.Entities;
+using LaunchpadApi.Entities;
+using MoundBoard.Utils;
 
 namespace MoundBoard.Panels;
 
@@ -19,7 +20,7 @@ public partial class ButtonPanel
 
     public void Update()
     {
-        Background = new SolidColorBrush(Button.Color);
+        Background = new SolidColorBrush(Button.Color.Convert());
     }
 
     private void ButtonPanel_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

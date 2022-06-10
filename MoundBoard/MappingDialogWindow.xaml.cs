@@ -3,6 +3,8 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using MoundBoard.Panels;
+using MoundBoard.Utils;
+using ColorConverter = MoundBoard.Utils.ColorConverter;
 
 namespace MoundBoard;
 
@@ -16,7 +18,7 @@ public partial class MappingDialogWindow
         
         InitializeComponent();
 
-        Canvas.Background = new SolidColorBrush(panel.Button.Color);
+        Canvas.Background = new SolidColorBrush(panel.Button.Color.Convert());
     }
 
     private void Canvas_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -26,7 +28,7 @@ public partial class MappingDialogWindow
         
         Panel.Button.Color = Color.FromArgb(d.Color.A, d.Color.R, d.Color.G, d.Color.B);
 
-        Canvas.Background = new SolidColorBrush(Panel.Button.Color);
+        Canvas.Background = new SolidColorBrush(Panel.Button.Color.Convert());
     }
 
     private void ButtonBase_OnClick(object sender, RoutedEventArgs e)

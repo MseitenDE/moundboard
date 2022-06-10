@@ -1,5 +1,5 @@
 ﻿using System.Windows.Controls;
-using MoundBoard.Entities;
+using LaunchpadApi.Entities;
 using MoundBoard.Panels;
 
 namespace MoundBoard;
