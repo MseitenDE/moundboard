@@ -6,13 +6,18 @@ using System.Windows.Threading;
 using Windows.Devices.Enumeration;
 using Windows.Devices.Midi;
 using Windows.Storage.Streams;
+using LaunchpadApi.Animations;
+using LaunchpadApi.Entities;
+using MoundBoard.Core;
 using ListBox = System.Windows.Controls.ListBox;
 
 namespace MoundBoard;
 
 public class MidiHandler
 {
+    public static MidiHandler Instance { get; private set; }
     public static bool isMartin;
+    public Launchpad Launchpad { get; private set; }
     private readonly ListBox _midiInPortListBox;
     private readonly ListBox _midiOutPortListBox;
     private readonly MyMidiDeviceWatcher _inputDeviceWatcher;
@@ -22,6 +27,8 @@ public class MidiHandler
 
     public MidiHandler(Dispatcher dispatcher, ListBox midiInPortListBox, ListBox midiOutPortListBox)
     {
+        Instance = this;
+        
         _midiInPortListBox = midiInPortListBox;
         _midiOutPortListBox = midiOutPortListBox;
 
@@ -120,6 +127,8 @@ public class MidiHandler
             return;
         }
 
+        Launchpad = new Launchpad(_midiInPort, _midiOutPort);
+
         var dataWriter = new DataWriter();
         string[] sysExMessages = { "F0 00 20 29 02 0E 0E 01 F7" };
 
@@ -140,6 +149,8 @@ public class MidiHandler
             IMidiMessage midiMessageToSend = new MidiSystemExclusiveMessage(dataWriter.DetachBuffer());
             _midiOutPort.SendMessage(midiMessageToSend);
         }
+        
+        PlayStartupAnimation();
     }
 
     private void MidiInPort_MessageReceived(MidiInPort sender, MidiMessageReceivedEventArgs args)
@@ -204,5 +215,28 @@ public class MidiHandler
         {
             MarkAnimation.PlayFrame(_midiOutPort);
         }
+    }
+
+    public void PlayStartupAnimation()
+    {
+        var layout = new Layout("Startup Animation", Launchpad);
+
+        Launchpad.CurrentLayout = layout;
+        layout.SetSolidColor(Colors.Black);
+        var colors = new[,]
+        {
+            { Colors.Red, Colors.Black, Colors.Blue, Colors.Yellow, Colors.Green, Colors.Red, Colors.Red, Colors.Red },
+            { Colors.Red, Colors.Black, Colors.Blue, Colors.Yellow, Colors.Green, Colors.Red, Colors.Red, Colors.Red },
+            { Colors.Red, Colors.Black, Colors.Blue, Colors.Yellow, Colors.Green, Colors.Red, Colors.Red, Colors.Red },
+            { Colors.Black, Colors.Black, Colors.Black, Colors.Black, Colors.Black, Colors.Black, Colors.Black, Colors.Black},
+            { Colors.Black, Colors.Black, Colors.Black, Colors.Black, Colors.Black, Colors.Black, Colors.Black, Colors.Black},
+            { Colors.Black, Colors.Black, Colors.Black, Colors.Black, Colors.Black, Colors.Black, Colors.Black, Colors.Black},
+            { Colors.Red, Colors.Black, Colors.Blue, Colors.Yellow, Colors.Green, Colors.Red, Colors.Red, Colors.Red },
+            { Colors.Red, Colors.Black, Colors.Blue, Colors.Yellow, Colors.Green, Colors.Red, Colors.Red, Colors.Red },
+            { Colors.Black, Colors.Black, Colors.Black, Colors.Black, Colors.Black, Colors.Black, Colors.Black, Colors.Black},
+            { Colors.Black, Colors.Black, Colors.Black, Colors.Black, Colors.Black, Colors.Black, Colors.Black, Colors.Black}
+        };
+        var shiftAnimation = new ShiftAnimation(100, colors);
+        shiftAnimation.Start(layout);
     }
 }

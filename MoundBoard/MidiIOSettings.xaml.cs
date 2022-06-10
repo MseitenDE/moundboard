@@ -26,7 +26,6 @@ public partial class MidiIOSettings
 
     private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
     {
-        MidiHandler.SetLightShowState("startup");
-        
+        MidiHandler.PlayStartupAnimation();
     }
 }

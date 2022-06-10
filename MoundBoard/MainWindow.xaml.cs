@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using MoundBoard.Entities;
 
 namespace MoundBoard;
 
@@ -18,7 +17,8 @@ public partial class MainWindow
 
     private void MappingButtonBase_OnClick(object sender, RoutedEventArgs e)
     {
-        Window mappingWindow = new MappingWindow(new Layout());
+        var launchpad = MidiHandler.Instance.Launchpad;
+        Window mappingWindow = new MappingWindow(launchpad.CurrentLayout);
         mappingWindow.Show();
     }
 
