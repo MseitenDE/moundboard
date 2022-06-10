@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoundBoard", "MoundBoard\MoundBoard.csproj", "{762F7F2C-04B6-4CB3-BE5F-B06FD2A4754A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaunchpadApi", "LaunchpadApi\LaunchpadApi.csproj", "{C9DF50FA-30A6-444F-8BA4-08CD182981A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoundBoard.Core", "MoundBoard.Core\MoundBoard.Core.csproj", "{3D0EEBBF-D1A0-4329-844C-F5F2CCC01A96}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{762F7F2C-04B6-4CB3-BE5F-B06FD2A4754A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{762F7F2C-04B6-4CB3-BE5F-B06FD2A4754A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{762F7F2C-04B6-4CB3-BE5F-B06FD2A4754A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9DF50FA-30A6-444F-8BA4-08CD182981A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9DF50FA-30A6-444F-8BA4-08CD182981A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9DF50FA-30A6-444F-8BA4-08CD182981A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9DF50FA-30A6-444F-8BA4-08CD182981A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D0EEBBF-D1A0-4329-844C-F5F2CCC01A96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D0EEBBF-D1A0-4329-844C-F5F2CCC01A96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D0EEBBF-D1A0-4329-844C-F5F2CCC01A96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D0EEBBF-D1A0-4329-844C-F5F2CCC01A96}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

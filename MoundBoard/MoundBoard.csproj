@@ -12,4 +12,8 @@
       <PackageReference Include="System.Text.Json" Version="6.0.4" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\LaunchpadApi\LaunchpadApi.csproj" />
+    </ItemGroup>
+
 </Project>
