@@ -16,12 +16,12 @@ public partial class MidiIOSettings
     
     private void MidiInPortListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        MidiHandler.OnSelectedInputChanged();
+        MidiHandler.OnSelectedInputChanged(MidiInPortListBox.SelectedIndex);
     }
 
     private void MidiOutPortListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        MidiHandler.OnSelectedOutputChanged();
+        MidiHandler.OnSelectedOutputChanged(MidiOutPortListBox.SelectedIndex);
     }
 
     private void ButtonBase_OnClick(object sender, RoutedEventArgs e)

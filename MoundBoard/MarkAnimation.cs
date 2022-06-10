@@ -16,12 +16,12 @@ public static class MarkAnimation
 
     public static void PlayFrame(IMidiOutPort midiOutPort)
     {
-        List<IMidiMessage> messages = new List<IMidiMessage>();
+        var messages = new List<IMidiMessage>();
         if (_lightshowState.Equals("startup"))
         {
-            byte channel = 0x00;
-            byte note = 0x0B;
-            byte velocity = 0x05;
+            const byte channel = 0x00;
+            const byte note = 0x0B;
+            const byte velocity = 0x05;
             switch (_enumeration)
             {
                 case 0:
@@ -1934,9 +1934,9 @@ public static class MarkAnimation
 
             if (!_lightshowState.Equals("")) _enumeration++;
 
-            foreach (var VARIABLE in messages)
+            foreach (var msg in messages)
             {
-                midiOutPort.SendMessage(VARIABLE);
+                midiOutPort.SendMessage(msg);
             }
         }
     }

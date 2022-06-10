@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Threading;
 using Windows.Devices.Enumeration;
 using Windows.Devices.Midi;
@@ -16,10 +15,8 @@ namespace MoundBoard;
 public class MidiHandler
 {
     public static MidiHandler Instance { get; private set; }
-    public static bool isMartin;
+    public static bool IsMk2 { get; set; }
     public Launchpad Launchpad { get; private set; }
-    private readonly ListBox _midiInPortListBox;
-    private readonly ListBox _midiOutPortListBox;
     private readonly MyMidiDeviceWatcher _inputDeviceWatcher;
     private readonly MyMidiDeviceWatcher _outputDeviceWatcher;
     private MidiInPort _midiInPort;
@@ -28,9 +25,6 @@ public class MidiHandler
     public MidiHandler(Dispatcher dispatcher, ListBox midiInPortListBox, ListBox midiOutPortListBox)
     {
         Instance = this;
-        
-        _midiInPortListBox = midiInPortListBox;
-        _midiOutPortListBox = midiOutPortListBox;
 
         _inputDeviceWatcher = new MyMidiDeviceWatcher(MidiInPort.GetDeviceSelector(), midiInPortListBox, dispatcher);
         _inputDeviceWatcher.StartWatcher();
@@ -39,40 +33,22 @@ public class MidiHandler
         _outputDeviceWatcher.StartWatcher();
     }
 
-    private async Task EnumerateMidiInputDevices()
+    public static async Task<DeviceInformationCollection> EnumerateMidiInputDevices()
     {
-        await EnumerateMidiDevices(MidiInPort.GetDeviceSelector(), _midiInPortListBox);
+        return await EnumerateMidiDevices(MidiInPort.GetDeviceSelector());
     }
 
-    private async Task EnumerateMidiOutputDevices()
+    public static async Task<DeviceInformationCollection> EnumerateMidiOutputDevices()
     {
-        await EnumerateMidiDevices(MidiOutPort.GetDeviceSelector(), _midiOutPortListBox);
+        return await EnumerateMidiDevices(MidiOutPort.GetDeviceSelector());
     }
 
-    private static async Task EnumerateMidiDevices(string midiQueryString, ItemsControl listBox)
+    private static async Task<DeviceInformationCollection> EnumerateMidiDevices(string midiQueryString)
     {
-        var midiDevices = await DeviceInformation.FindAllAsync(midiQueryString);
-
-        listBox.Items.Clear();
-
-        // Return if no external devices are connected
-        if (midiDevices.Count == 0)
-        {
-            listBox.Items.Add("No MIDI output devices found!");
-            listBox.IsEnabled = false;
-            return;
-        }
-
-        // Else, add each connected input device to the list
-        foreach (var deviceInfo in midiDevices)
-        {
-            listBox.Items.Add(deviceInfo.Name);
-        }
-
-        listBox.IsEnabled = true;
+        return await DeviceInformation.FindAllAsync(midiQueryString);
     }
 
-    public async void OnSelectedInputChanged()
+    public async void OnSelectedInputChanged(int index)
     {
         var deviceInfoCollection = _inputDeviceWatcher.DeviceInformationCollection;
 
@@ -81,7 +57,7 @@ public class MidiHandler
             return;
         }
 
-        var devInfo = deviceInfoCollection[_midiInPortListBox.SelectedIndex];
+        var devInfo = deviceInfoCollection[index];
 
         if (devInfo == null)
         {
@@ -103,7 +79,7 @@ public class MidiHandler
         MarkAnimation.SetLightShowState("startup");
     }
 
-    public async void OnSelectedOutputChanged()
+    public async void OnSelectedOutputChanged(int index)
     {
         var deviceInfoCollection = _outputDeviceWatcher.DeviceInformationCollection;
 
@@ -112,7 +88,7 @@ public class MidiHandler
             return;
         }
 
-        var devInfo = deviceInfoCollection[_midiOutPortListBox.SelectedIndex];
+        var devInfo = deviceInfoCollection[index];
 
         if (devInfo == null)
         {
@@ -129,27 +105,8 @@ public class MidiHandler
 
         Launchpad = new Launchpad(_midiInPort, _midiOutPort);
 
-        var dataWriter = new DataWriter();
-        string[] sysExMessages = { "F0 00 20 29 02 0E 0E 01 F7" };
+        MidiOutPort_sendMessage();
 
-        foreach (var sysExMessage in sysExMessages)
-        {
-            var sysExMessageLength = sysExMessage.Length;
-
-
-            int loopCount = (sysExMessageLength + 1) / 3;
-
-            for (int i = 0; i < loopCount; i++)
-            {
-                var messageString = sysExMessage.Substring(3 * i, 2);
-                var messageByte = Convert.ToByte(messageString, 16);
-                dataWriter.WriteByte(messageByte);
-            }
-
-            IMidiMessage midiMessageToSend = new MidiSystemExclusiveMessage(dataWriter.DetachBuffer());
-            _midiOutPort.SendMessage(midiMessageToSend);
-        }
-        
         PlayStartupAnimation();
     }
 
@@ -168,12 +125,12 @@ public class MidiHandler
         }
     }
 
-    public void MidiOutPort_sendMessage()
+    private void MidiOutPort_sendMessage()
     {
-        IMidiMessage midiMessageToSend = null;
         var dataWriter = new DataWriter();
-        var sysExMessage = "F0 00 20 29 02 0E 0E 1 F7";
-        if (isMartin)
+        // TODO @Mark Changed 1 to 01
+        var sysExMessage = "F0 00 20 29 02 0E 0E 01 F7";
+        if (IsMk2)
         {
             sysExMessage = "F0 00 20 29 02 18 0E 01 F7";
         }
@@ -190,17 +147,17 @@ public class MidiHandler
         // SysEx messages are two characters long with 1-character space in between them
         // So we add 1 to the message length, so that it is perfectly divisible by 3
         // The loop count tracks the number of individual message pieces
-        int loopCount = (sysExMessageLength + 1) / 3;
+        var loopCount = (sysExMessageLength + 1) / 3;
 
         // Expecting a string of format "F0 NN NN NN NN.... F7", where NN is a byte in hex
-        for (int i = 0; i < loopCount; i++)
+        for (var i = 0; i < loopCount; i++)
         {
             var messageString = sysExMessage.Substring(3 * i, 2);
             var messageByte = Convert.ToByte(messageString, 16);
             dataWriter.WriteByte(messageByte);
         }
 
-        midiMessageToSend = new MidiSystemExclusiveMessage(dataWriter.DetachBuffer());
+        var midiMessageToSend = new MidiSystemExclusiveMessage(dataWriter.DetachBuffer());
         _midiOutPort.SendMessage(midiMessageToSend);
     }
 

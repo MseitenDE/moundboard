@@ -29,11 +29,11 @@ public partial class MainWindow
 
     private void ToggleButton_OnChecked(object sender, RoutedEventArgs e)
     {
-        MidiHandler.isMartin = true;
+        MidiHandler.IsMk2 = true;
     }
 
     private void ToggleButton_OnUnchecked(object sender, RoutedEventArgs e)
     {
-        MidiHandler.isMartin = false;
+        MidiHandler.IsMk2 = false;
     }
 }
