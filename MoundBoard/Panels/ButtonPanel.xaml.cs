@@ -20,7 +20,7 @@ public partial class ButtonPanel
 
     public void Update()
     {
-        Background = new SolidColorBrush(Button.Color.Convert());
+        Background = Button.Color.Convert();
     }
 
     private void ButtonPanel_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
