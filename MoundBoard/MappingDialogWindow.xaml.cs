@@ -17,7 +17,7 @@ public partial class MappingDialogWindow
         
         InitializeComponent();
 
-        Canvas.Background =panel.Button.Color.Convert();
+        Canvas.Background =panel.Button.Color.ConvertToBrush();
     }
 
     private void Canvas_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -27,7 +27,7 @@ public partial class MappingDialogWindow
         
         Panel.Button.Color = ColorConverter.GetRandomColor();
 
-        Canvas.Background =Panel.Button.Color.Convert();
+        Canvas.Background =Panel.Button.Color.ConvertToBrush();
     }
 
     private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
