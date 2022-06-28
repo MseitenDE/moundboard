@@ -42,4 +42,6 @@ public class LaunchpadButton
         var noteMessage = new MidiNoteOnMessage((byte) Effect, NoteIndex, Color.Convert());
         Layout.Launchpad.OutPort.SendMessage(noteMessage);
     }
+
+    public LaunchpadButtonAction LaunchpadButtonAction = LaunchpadButtonAction.nextColor;
 }
