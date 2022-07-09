@@ -180,7 +180,7 @@ public class MidiHandler
 
     public void PlayStartupAnimation()
     {
-        var layout = new Layout("Startup Animation", Launchpad);
+        var layout = new LayoutButtons("Startup Animation", Launchpad);
 
         Launchpad.CurrentLayout = layout;
         layout.SetSolidColor(Colors.Black);

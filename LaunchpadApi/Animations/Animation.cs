@@ -8,7 +8,7 @@ public abstract class Animation
     /// Delay in ms between frames
     /// </summary>
     public int Delay { get; }
-    public Layout? Layout { get; private set; }
+    public LayoutButtons? Layout { get; private set; }
 
     /// <summary>
     /// Creates a new animation
@@ -22,10 +22,10 @@ public abstract class Animation
     /// <summary>
     /// Starts the animation and applies the frames after the given time.
     /// </summary>
-    public async void Start(Layout layout)
+    public async void Start(LayoutButtons layoutButtons)
     {
-        Layout = layout;
-        OnStart(layout);
+        Layout = layoutButtons;
+        OnStart(layoutButtons);
 
         while (HasNext())
         {
@@ -37,13 +37,13 @@ public abstract class Animation
     /// <summary>
     /// Starts the animation, but new frames are only displayed if <see cref="ApplyNextFrame"/> is called.
     /// </summary>
-    public void StartManual(Layout layout)
+    public void StartManual(LayoutButtons layoutButtons)
     {
-        Layout = layout;
-        OnStart(layout);
+        Layout = layoutButtons;
+        OnStart(layoutButtons);
     }
 
-    protected abstract void OnStart(Layout layout);
+    protected abstract void OnStart(LayoutButtons layoutButtons);
     public abstract void ApplyNextFrame();
     public abstract bool HasNext();
 }

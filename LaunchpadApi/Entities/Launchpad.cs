@@ -7,11 +7,11 @@ public class Launchpad
     public byte RowCount { get; set; } = 10;
     public byte ColumnCount { get; set; } = 10;
     
-    private Layout? _currentLayout;
+    private LayoutButtons? _currentLayout;
     public MidiInPort InPort { get; set; }
     public IMidiOutPort OutPort { get; set; }
 
-    public Layout? CurrentLayout
+    public LayoutButtons? CurrentLayout
     {
         get => _currentLayout;
         set
@@ -29,15 +29,15 @@ public class Launchpad
         OutPort = outPort;
     }
 
-    private void ChangeLayout(Layout layout)
+    private void ChangeLayout(LayoutButtons layoutButtons)
     {
         if (_currentLayout != null)
         {
             _currentLayout.IsActive = false;
         }
-        _currentLayout = layout;
+        _currentLayout = layoutButtons;
         
-        layout.IsActive = true;
-        layout.Apply();
+        layoutButtons.IsActive = true;
+        layoutButtons.Apply();
     }
 }

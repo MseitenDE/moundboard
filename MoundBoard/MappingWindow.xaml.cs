@@ -6,11 +6,11 @@ namespace MoundBoard;
 
 public partial class MappingWindow
 {
-    public Layout Layout { get; }
+    public LayoutButtons LayoutButtons { get; }
 
-    public MappingWindow(Layout layout)
+    public MappingWindow(LayoutButtons layoutButtons)
     {
-        Layout = layout;
+        LayoutButtons = layoutButtons;
         
         InitializeComponent();
 
@@ -18,7 +18,7 @@ public partial class MappingWindow
         {
             for (var y = 0; y < 8; y++)
             {
-                var panel = new ButtonPanel(layout.Buttons[x, y]);
+                var panel = new ButtonPanel(layoutButtons.Buttons[x, y]);
                 
                 panel.SetValue(Grid.RowProperty, x + 1);
                 panel.SetValue(Grid.ColumnProperty, y + 1);

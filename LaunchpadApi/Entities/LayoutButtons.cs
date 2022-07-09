@@ -2,27 +2,25 @@
 
 namespace LaunchpadApi.Entities;
 
-public class LayoutFader : Layout
+public class LayoutButtons : Layout
 {
     public Launchpad Launchpad { get; }
     public bool IsActive { get; protected internal set; }
     public string Name { get; }
-    public LaunchpadButtonFaderVertical[] Fader { get; }
-    
+    public LaunchpadButton[,] Buttons { get; }
 
-    public LayoutFader(string name, Launchpad launchpad)
+    public LayoutButtons(string name, Launchpad launchpad)
     {
         Name = name;
         Launchpad = launchpad;
+        Buttons = new LaunchpadButton[launchpad.ColumnCount, launchpad.RowCount];
         
         for (byte x = 0; x < launchpad.ColumnCount; x++)
         {
-            
-            Fader[x] = new LaunchpadButtonFaderVertical(this, x);
-            // for (byte y = 0; y < launchpad.RowCount; y++)
-            // {
-            //     Buttons[x, y] = new LaunchpadButton(this, x, y);
-            // }
+            for (byte y = 0; y < launchpad.RowCount; y++)
+            {
+                Buttons[x, y] = new LaunchpadButton(this, x, y);
+            }
         }
     }
 

@@ -16,9 +16,9 @@ public class ShiftAnimation : Animation
         Colors = colors;
     }
 
-    protected override void OnStart(Layout layout)
+    protected override void OnStart(LayoutButtons layoutButtons)
     {
-        _offset = layout.Launchpad.ColumnCount;
+        _offset = layoutButtons.Launchpad.ColumnCount;
         AnimationLength = Colors.GetLength(1) + _offset;
     }
 
