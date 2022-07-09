@@ -44,4 +44,5 @@ public class LaunchpadButton
     }
 
     public LaunchpadButtonAction LaunchpadButtonAction = LaunchpadButtonAction.nextColor;
+    
 }

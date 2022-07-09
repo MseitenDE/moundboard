@@ -8,6 +8,7 @@ using Windows.Storage.Streams;
 using LaunchpadApi.Animations;
 using LaunchpadApi.Entities;
 using MoundBoard.Core;
+using MoundBoard.Utils;
 using ListBox = System.Windows.Controls.ListBox;
 
 namespace MoundBoard;
@@ -119,9 +120,12 @@ public class MidiHandler
         if (receivedMidiMessage.Type == MidiMessageType.NoteOn)
         {
             var midiNote = (MidiNoteOnMessage)receivedMidiMessage;
-            Debug.WriteLine(midiNote.Channel);
-            Debug.WriteLine(midiNote.Note);
-            Debug.WriteLine(midiNote.Velocity);
+
+
+            var X = midiNote.Note % 10;
+            var Y = (midiNote.Note - X) / 10;
+
+            LaunchpadButtonActionConverter.Convert(Launchpad.CurrentLayout[X,Y].LaunchpadButtonAction);
         }
     }
 
