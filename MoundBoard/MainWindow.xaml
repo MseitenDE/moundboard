@@ -10,6 +10,7 @@
         <Button Height="60" Margin="20,100,20,0" VerticalAlignment="Top" Click="IOButtonBase_OnClick" Background="Chocolate">MidiIOSettings</Button>
         <Button Height="60" Margin="20,180,20,0" VerticalAlignment="Top" Click="MappingButtonBase_OnClick" Background="Chocolate">Mapping</Button>
         <Button Height="60" Margin="20,260,20,0" VerticalAlignment="Top" Click="ButtonBase_OnClick" Background="Chocolate">Message</Button>
+        <Button Height="60" Margin="20,340,20,0" VerticalAlignment="Top" Click="LayoutsButtonBase_OnClick" Background="Chocolate">Layouts</Button>
         <CheckBox VerticalAlignment="Center" Checked="ToggleButton_OnChecked" Unchecked="ToggleButton_OnUnchecked">Martin</CheckBox>
 
     </Grid>

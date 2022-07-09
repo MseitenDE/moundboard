@@ -36,4 +36,10 @@ public partial class MainWindow
     {
         MidiHandler.IsMk2 = false;
     }
+
+    private void LayoutsButtonBase_OnClick(object sender, RoutedEventArgs e)
+    {
+        var layoutsWindow = new LayoutsWindow();
+        layoutsWindow.Show();
+    }
 }
