@@ -9,6 +9,8 @@ public class LayoutButtonsFader : Layout
     public string Name { get; }
     public LaunchpadButtonFaderVertical[] Fader { get; }
     
+    private LaunchpadButton[,] Buttons { get; }
+    
 
     public LayoutButtonsFader(string name, Launchpad launchpad)
     {
@@ -18,11 +20,11 @@ public class LayoutButtonsFader : Layout
         for (byte x = 0; x < launchpad.ColumnCount; x++)
         {
             
-            Fader[x] = new LaunchpadButtonFaderVertical(this, x);
-            // for (byte y = 0; y < launchpad.RowCount; y++)
-            // {
-            //     Buttons[x, y] = new LaunchpadButton(this, x, y);
-            // }
+            for (byte y = 0; y < launchpad.RowCount; y++)
+            {
+                // Buttons[x, y] = new LaunchpadButton(this, x, y);
+                if (Fader != null) Fader[x] = new LaunchpadButtonFaderVertical(this, x, Buttons);
+            }
         }
     }
 

@@ -8,9 +8,9 @@ public partial class MappingWindow
 {
     public LayoutButtons LayoutButtons { get; }
 
-    public MappingWindow(LayoutButtons layoutButtons)
+    public MappingWindow(Layout? layoutButtons)
     {
-        LayoutButtons = layoutButtons;
+        LayoutButtons = (LayoutButtons?)layoutButtons;
         
         InitializeComponent();
 

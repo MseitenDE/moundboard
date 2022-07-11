@@ -11,7 +11,7 @@ public class LaunchpadButtonFaderVertical
     public Layout Layout { get; }
     public byte X { get; }
     public byte Y { get; }
-    public LaunchpadButton[] Buttons { get; }
+    public LaunchpadButton[,] Buttons { get; }
     public ButtonEffect Effect { get; set; }
     private byte NoteIndex => (byte) (X + Y * Layout.Launchpad.RowCount);
 
@@ -26,19 +26,20 @@ public class LaunchpadButtonFaderVertical
         }
     }
 
-    public LaunchpadButtonFaderVertical(Layout layout, byte x)
+    public LaunchpadButtonFaderVertical(Layout layout, byte x, LaunchpadButton[,] buttons)
     {
         Layout = layout;
         X = x;
+        Buttons = buttons;
         Y = 1;
-        Buttons![0] = new LaunchpadButton(layout, X, Y);
-        Buttons[1] = new LaunchpadButton(layout, X, (byte)(Y + 10));
-        Buttons[2] = new LaunchpadButton(layout, X, (byte)(Y + 20));
-        Buttons[3] = new LaunchpadButton(layout, X, (byte)(Y + 30));
-        Buttons[4] = new LaunchpadButton(layout, X, (byte)(Y + 40));
-        Buttons[5] = new LaunchpadButton(layout, X, (byte)(Y + 50));
-        Buttons[6] = new LaunchpadButton(layout, X, (byte)(Y + 60));
-        Buttons[7] = new LaunchpadButton(layout, X, (byte)(Y + 70));
+        Buttons![x,0] = new LaunchpadButton(layout, X, Y);
+        Buttons[x,1] = new LaunchpadButton(layout, X, (byte)(Y + 10));
+        Buttons[x,2] = new LaunchpadButton(layout, X, (byte)(Y + 20));
+        Buttons[x,3] = new LaunchpadButton(layout, X, (byte)(Y + 30));
+        Buttons[x,4] = new LaunchpadButton(layout, X, (byte)(Y + 40));
+        Buttons[x,5] = new LaunchpadButton(layout, X, (byte)(Y + 50));
+        Buttons[x,6] = new LaunchpadButton(layout, X, (byte)(Y + 60));
+        Buttons[x,7] = new LaunchpadButton(layout, X, (byte)(Y + 70));
     }
 
     /// <summary>

@@ -1,4 +1,5 @@
 ﻿using Windows.Devices.Midi;
+using MoundBoard.Core;
 
 namespace LaunchpadApi.Entities;
 
@@ -7,11 +8,12 @@ public class Launchpad
     public byte RowCount { get; set; } = 10;
     public byte ColumnCount { get; set; } = 10;
     
-    private LayoutButtons? _currentLayout;
+    private Layout? _currentLayout;
+    public Layout[] Layouts;
     public MidiInPort InPort { get; set; }
     public IMidiOutPort OutPort { get; set; }
 
-    public LayoutButtons? CurrentLayout
+    public Layout? CurrentLayout
     {
         get => _currentLayout;
         set
@@ -27,17 +29,34 @@ public class Launchpad
     {
         InPort = inPort;
         OutPort = outPort;
+
+        Layouts = new Layout[] { new LayoutButtons("layout1", this), new LayoutButtonsFader("layout2", this) };
+        // Layouts[0].Buttons[5, 5].Color = Colors.Blue;
+        // Layouts[1].Buttons[7, 7].Color = Colors.Red;
     }
 
-    private void ChangeLayout(LayoutButtons layoutButtons)
+    private void ChangeLayout(Layout? layout)
     {
         if (_currentLayout != null)
         {
             _currentLayout.IsActive = false;
         }
-        _currentLayout = layoutButtons;
+        _currentLayout = layout;
         
-        layoutButtons.IsActive = true;
-        layoutButtons.Apply();
+        layout.IsActive = true;
+        layout.Apply();
+    }
+
+    public void ChangeLayout(int index)
+    {
+        if (_currentLayout != null)
+        {
+            _currentLayout.IsActive = false;
+        }
+
+        _currentLayout = Layouts[index];
+
+        Layouts[index].IsActive = true;
+        Layouts[index].Apply();
     }
 }

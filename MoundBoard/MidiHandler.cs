@@ -126,6 +126,19 @@ public class MidiHandler
             var Y = (midiNote.Note - X) / 10;
 
             LaunchpadButtonActionConverter.Convert(Launchpad.CurrentLayout[X,Y].LaunchpadButtonAction);
+        }else if (receivedMidiMessage.Type == MidiMessageType.ControlChange)
+        {
+            var midinote = (MidiControlChangeMessage)receivedMidiMessage;
+
+            switch (midinote.Controller)
+            {
+                case 101:
+                    Launchpad.ChangeLayout(0);
+                    break;
+                case 102: 
+                    Launchpad.ChangeLayout(1);
+                    break;
+            }
         }
     }
 
