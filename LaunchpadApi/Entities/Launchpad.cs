@@ -1,5 +1,4 @@
 ﻿using Windows.Devices.Midi;
-using MoundBoard.Core;
 
 namespace LaunchpadApi.Entities;
 
@@ -35,7 +34,7 @@ public class Launchpad
         // Layouts[1].Buttons[7, 7].Color = Colors.Red;
     }
 
-    private void ChangeLayout(Layout? layout)
+    private void ChangeLayout(Layout layout)
     {
         if (_currentLayout != null)
         {
